@@ -2,10 +2,9 @@ services:
   # 1. Auth Service
   - type: web
     name: auth-service
-    runtime: native
-    rootDir: backend/auth-service
-    buildCommand: ./mvnw clean install -DskipTests
-    startCommand: java -jar target/*.jar
+    runtime: docker
+    dockerContext: backend/auth-service
+    dockerFilePath: backend/auth-service/Dockerfile
     envVars:
       - key: PORT
         value: 8082
@@ -22,10 +21,9 @@ services:
   # 2. Event Service
   - type: web
     name: event-service
-    runtime: native
-    rootDir: backend/event-service
-    buildCommand: ./mvnw clean install -DskipTests
-    startCommand: java -jar target/*.jar
+    runtime: docker
+    dockerContext: backend/event-service
+    dockerFilePath: backend/event-service/Dockerfile
     envVars:
       - key: PORT
         value: 8081
@@ -42,10 +40,9 @@ services:
   # 3. API Gateway
   - type: web
     name: api-gateway
-    runtime: native
-    rootDir: backend/api-gateway
-    buildCommand: ./mvnw clean install -DskipTests
-    startCommand: java -jar target/*.jar
+    runtime: docker
+    dockerContext: backend/api-gateway
+    dockerFilePath: backend/api-gateway/Dockerfile
     envVars:
       - key: PORT
         value: 8080
