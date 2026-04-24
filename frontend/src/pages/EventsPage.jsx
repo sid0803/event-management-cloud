@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getEvents, getEventById, registerEvent } from "../services/api";
+import { BASE_URL } from "../services/api";
 import AuthModal from "../components/AuthModal";
 
 export default function EventsPage({ role }) {
@@ -98,8 +99,8 @@ export default function EventsPage({ role }) {
 const handleCreateEvent = async () => {
   try {
     const url = editingId
-      ? `http://localhost:8080/events/${editingId}`
-      : `http://localhost:8080/events`;
+      ? `${BASE_URL}/events/${editingId}`
+      : `${BASE_URL}/events`;
 
     const method = editingId ? "PUT" : "POST";
 
@@ -133,7 +134,7 @@ const handleCreateEvent = async () => {
   // ================= DELETE =================
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:8080/events/${id}`, {
+      await fetch(`${BASE_URL}/events/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
