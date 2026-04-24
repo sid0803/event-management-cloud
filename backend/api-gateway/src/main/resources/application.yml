@@ -14,8 +14,6 @@ spring:
           uri: ${EVENT_SERVICE_URL:http://localhost:8081}
           predicates:
             - Path=/events/**
-          filters:
-            - RewritePath=/events/(?<segment>.*), /$\{segment}
 
       globalcors:
         corsConfigurations:
