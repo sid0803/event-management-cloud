@@ -1,0 +1,64 @@
+services:
+  # 1. Auth Service
+  - type: web
+    name: auth-service
+    runtime: native
+    rootDir: backend/auth-service
+    buildCommand: ./mvnw clean install -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: PORT
+        value: 8082
+      - key: AUTH_DB_URL
+        sync: false
+        placeholder: "jdbc:mysql://YOUR_AIVEN_HOST:PORT/event_management_auth_db"
+      - key: DB_USERNAME
+        sync: false
+        placeholder: "avnadmin"
+      - key: DB_PASSWORD
+        sync: false
+        placeholder: "your_aiven_password"
+
+  # 2. Event Service
+  - type: web
+    name: event-service
+    runtime: native
+    rootDir: backend/event-service
+    buildCommand: ./mvnw clean install -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: PORT
+        value: 8081
+      - key: EVENT_DB_URL
+        sync: false
+        placeholder: "jdbc:mysql://YOUR_AIVEN_HOST:PORT/event_management_event_db"
+      - key: DB_USERNAME
+        sync: false
+        placeholder: "avnadmin"
+      - key: DB_PASSWORD
+        sync: false
+        placeholder: "your_aiven_password"
+
+  # 3. API Gateway
+  - type: web
+    name: api-gateway
+    runtime: native
+    rootDir: backend/api-gateway
+    buildCommand: ./mvnw clean install -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: AUTH_SERVICE_URL
+        fromService:
+          name: auth-service
+          type: web
+          property: host
+      - key: EVENT_SERVICE_URL
+        fromService:
+          name: event-service
+          type: web
+          property: host
+      - key: FRONTEND_URL
+        sync: false
+        placeholder: "https://your-app.vercel.app"
